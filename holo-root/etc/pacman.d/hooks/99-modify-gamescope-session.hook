@@ -1,0 +1,10 @@
+[Trigger]
+Type = Path
+Operation = Install
+Operation = Upgrade
+Target = usr/bin/gamescope-session
+
+[Action]
+Description = Modify gamescope-session after update ...
+When = PostTransaction
+Exec = /usr/bin/gs-update
