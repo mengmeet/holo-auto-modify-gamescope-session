@@ -2,7 +2,7 @@
 
 DEVICENAME=$(cat /sys/devices/virtual/dmi/id/product_name)
 
-RWFRES30_LIST="ONEXPLAYER2 ARP2"
+RWFRES30_LIST="ONEXPLAYER 2 ARP23"
 RWFRES40_LIST="G1619-04:G1618-04"
 
 if [[ ":$RWFRES30_LIST:" =~ ":$DEVICENAME:"  ]]; then
