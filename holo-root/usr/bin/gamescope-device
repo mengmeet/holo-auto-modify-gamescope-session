@@ -2,6 +2,24 @@
 
 DEVICENAME=$(cat /sys/devices/virtual/dmi/id/product_name)
 
+# RESOLUTION
+H720_LIST="G1618-03"
+if [[ ":$H720_LIST:" =~ ":$DEVICENAME:"  ]]; then
+        WIDTH=1280
+	HEIGHT=720
+fi
+
+export WIDTH=${WIDTH:-"1280"}
+export HEIGHT=${HEIGHT:-"800"}
+
+# PREFER_OUTPUT
+DSI1_LIST="G1618-03"
+if [[ ":$DSI1_LIST:" =~ ":$DEVICENAME:"  ]]; then
+        PREFER_OUTPUT=DSI1
+fi
+
+export PREFER_OUTPUT=${PREFER_OUTPUT:-"eDP-1"}
+
 # 30~60 refresh rate
 RWFRES30_LIST="ONEXPLAYER 2 ARP23"
 # 40~60 refresh rate
@@ -38,3 +56,23 @@ else
 fi
 
 export ORIENTATION=${ORIENTATION}
+
+
+# EXTRA_VARS
+FULLSCREEN_LIST="G1618-03"
+
+if [[ ":$FULLSCREEN_LIST:" =~ ":$DEVICENAME:"  ]]; then
+        EXTRA_VARS="-f"
+else
+        EXTRA_VARS=""
+fi
+
+export EXTRA_VARS=${EXTRA_VARS}
+
+# INTEL WORKAROUND
+VGA_DEVICE=$(lspci | grep VGA)
+if [[ "$VGA_DEVICE" =~ "Intel" ]]; then
+    export INTEL_DEBUG=noccs
+    export mesa_glthread=true
+    export MANGOHUD=1
+fi

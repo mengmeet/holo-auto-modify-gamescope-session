@@ -16,7 +16,8 @@ sed -i "2i$MODIFIED_TAG" /usr/bin/gamescope-session
 sed -i '3i\source /usr/bin/gamescope-device' /usr/bin/gamescope-session
 
 # 替换文本
-sed -i 's#-w 1280 -h 800 \\#-w 1280 -h 800 \\\n\t${ORIENTATION} \\#' /usr/bin/gamescope-session
+sed -i 's#-w 1280 -h 800 \\#-w ${WIDTH} -h ${HEIGHT} \\\n\t${ORIENTATION} \\\n\t${EXTRA_VARS} \\#' /usr/bin/gamescope-session
+sed -i 's#eDP-1#${PREFER_OUTPUT}#' /usr/bin/gamescope-session
 sed -i 's#STEAM_DISPLAY_REFRESH_LIMITS=40,60#STEAM_DISPLAY_REFRESH_LIMITS=${REFRESH_LIMITS}#' /usr/bin/gamescope-session
 
 echo "修改完成"
