@@ -4,6 +4,7 @@
 DEVICENAME=$(cat /sys/devices/virtual/dmi/id/product_name)
 
 # RESOLUTION
+# GPD-WIN3 设备 分辨率重置为720P
 H720_LIST="G1618-03"
 if [[ ":$H720_LIST:" =~ ":$DEVICENAME:"  ]]; then
         WIDTH=1280
@@ -14,6 +15,7 @@ export WIDTH=${WIDTH:-"1280"}
 export HEIGHT=${HEIGHT:-"800"}
 
 # PREFER_OUTPUT
+# GPD-WIN3 设备 可使用'xrandr --verbose'命令查询WIN3的显示器名称为DSI1,修改默认eDP-1为DSI1
 DSI1_LIST="G1618-03"
 if [[ ":$DSI1_LIST:" =~ ":$DEVICENAME:"  ]]; then
         PREFER_OUTPUT=DSI1
@@ -61,6 +63,7 @@ export ORIENTATION=${ORIENTATION}
 
 
 # EXTRA_VARS
+# GPD-WIN3 设备 desktop模式运行gamescope以全屏方式启动
 FULLSCREEN_LIST="G1618-03"
 
 if [[ ":$FULLSCREEN_LIST:" =~ ":$DEVICENAME:"  ]]; then
@@ -72,9 +75,13 @@ fi
 export EXTRA_VARS=${EXTRA_VARS}
 
 # INTEL WORKAROUND
+# 修复Intel的显卡出现颜色错误的问题 INTEL_DEBUG=noccs
+# 修复Intel部分片头视频没有声音的问题 mesa_glthread=true
+# 修复Intel没有MANGOHUD显示的问题 MANGOHUD=1 MANGOHUD_DLSYM=1 
 VGA_DEVICE=$(lspci | grep VGA)
 if [[ "$VGA_DEVICE" =~ "Intel" ]]; then
     export INTEL_DEBUG=noccs
     export mesa_glthread=true
     export MANGOHUD=1
+    export MANGOHUD_DLSYM=1
 fi
