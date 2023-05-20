@@ -20,9 +20,9 @@ fi
 
 export PREFER_OUTPUT=${PREFER_OUTPUT:-"eDP-1"}
 
-# 30~60 refresh rate
+# 30~60 刷新率设备
 RWFRES30_LIST="ONEXPLAYER 2 ARP23"
-# 40~60 refresh rate
+# 40~60 刷新率设备
 RWFRES40_LIST="G1619-04:G1618-04"
 
 if [[ ":$RWFRES30_LIST:" =~ ":$DEVICENAME:"  ]]; then
