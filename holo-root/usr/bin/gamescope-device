@@ -3,17 +3,28 @@
 #获取设备型号
 DEVICENAME=$(cat /sys/devices/virtual/dmi/id/product_name)
 
-# RESOLUTION
-# GPD-WIN3 设备 分辨率重置为720P
+# 分辨率设置
 H720_LIST="G1618-03"
-if [[ ":$H720_LIST:" =~ ":$DEVICENAME:"  ]]; then
+H1080_LIST="G1618-04"
+H1600_LIST="G1619-04"
+if [[ ":$H1600_LIST:" =~ ":$DEVICENAME:"  ]]; then
+        WIDTH=2560
+	HEIGHT=1600
+elif [[ ":$H1080_LIST:" =~ ":$DEVICENAME:"  ]]; then
+        WIDTH=1920
+	HEIGHT=1080
+elif [[ ":$H720_LIST:" =~ ":$DEVICENAME:"  ]]; then
         WIDTH=1280
 	HEIGHT=720
+else
+        WIDTH=1280
+	HEIGHT=800
 fi
 
 export WIDTH=${WIDTH:-"1280"}
 export HEIGHT=${HEIGHT:-"800"}
-
+	
+	
 # PREFER_OUTPUT
 # GPD-WIN3 设备 可使用'xrandr --verbose'命令查询WIN3的显示器名称为DSI1,修改默认eDP-1为DSI1
 DSI1_LIST="G1618-03"
@@ -49,7 +60,7 @@ AYA_LIST="NEXT:NEXT Pro:NEXT Advance:AYANEO NEXT:AYANEO NEXT Pro:AYANEO NEXT Adv
 # AOKZOE 奥克设备
 AOK_LIST="AOKZOE A1 AR07"
 # GPD 设备
-GPD_LIST="G1619-04:G1618-04"
+GPD_LIST="G1618-04:G1619-04"
 
 ORIENTATION_LEFT_LIST="${AIR_LIST}:${OXP_LIST}:${AOK_LIST}"
 
