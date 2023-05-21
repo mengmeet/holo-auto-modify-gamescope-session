@@ -1,26 +1,37 @@
 #!/bin/bash
 
-#获取设备型号
+# 获取设备型号
 DEVICENAME=$(cat /sys/devices/virtual/dmi/id/product_name)
 
-# 分辨率设置
-H720_LIST="G1618-03"
-H1080_LIST="G1618-04"
-H1600_LIST="G1619-04"
-if [[ ":$H1600_LIST:" =~ ":$DEVICENAME:"  ]]; then
-        WIDTH=2560
-	HEIGHT=1600
-elif [[ ":$H1080_LIST:" =~ ":$DEVICENAME:"  ]]; then
-        WIDTH=1920
-	HEIGHT=1080
-elif [[ ":$H720_LIST:" =~ ":$DEVICENAME:"  ]]; then
-        WIDTH=1280
-	HEIGHT=720
-else
-        WIDTH=1280
-	HEIGHT=800
+# 检测是否为desktop模式
+killall -0 startplasma-x11 > /dev/null 2>&1
+if [[ "$?" == "0" ]]; then
+	DESKTOP_MODE_FLAG=${DESKTOP_MODE_FLAG:-"1"}
 fi
 
+# 检测是否为Intel显卡
+VGA_DEVICE=$(lspci | grep VGA)
+if [[ "$VGA_DEVICE" =~ "Intel" ]]; then
+	INTEL_DEVICE_FLAG=${INTEL_DEVICE_FLAG:-"1"}
+fi
+
+# desktop模式的分辨率设置
+if [[ "$DESKTOP_MODE_FLAG" == "1" ]]; then
+	H720_LIST="G1618-03"
+	H1080_LIST="G1618-04"
+	H1600_LIST="G1619-04"
+	if [[ ":$H1600_LIST:" =~ ":$DEVICENAME:" ]]; then
+        	WIDTH=2560
+		HEIGHT=1600
+	elif [[ ":$H1080_LIST:" =~ ":$DEVICENAME:" ]]; then
+        	WIDTH=1920
+		HEIGHT=1080
+	elif [[ ":$H720_LIST:" =~ ":$DEVICENAME:" ]]; then
+        	WIDTH=1280
+		HEIGHT=720
+	fi
+fi
+# gamescope-session默认使用1280x800分辨率启动
 export WIDTH=${WIDTH:-"1280"}
 export HEIGHT=${HEIGHT:-"800"}
 	
@@ -28,7 +39,7 @@ export HEIGHT=${HEIGHT:-"800"}
 # PREFER_OUTPUT
 # GPD-WIN3 设备 可使用'xrandr --verbose'命令查询WIN3的显示器名称为DSI1,修改默认eDP-1为DSI1
 DSI1_LIST="G1618-03"
-if [[ ":$DSI1_LIST:" =~ ":$DEVICENAME:"  ]]; then
+if [[ ":$DSI1_LIST:" =~ ":$DEVICENAME:" ]]; then
         PREFER_OUTPUT=DSI1
 fi
 
@@ -39,16 +50,15 @@ RWFRES30_LIST="ONEXPLAYER 2 ARP23"
 # 40~60 刷新率设备
 RWFRES40_LIST="G1619-04:G1618-04"
 
-if [[ ":$RWFRES30_LIST:" =~ ":$DEVICENAME:"  ]]; then
+if [[ ":$RWFRES30_LIST:" =~ ":$DEVICENAME:" ]]; then
         REFRESH_LIMITS="30,60"
-elif [[ ":$RWFRES40_LIST:" =~ ":$DEVICENAME:"  ]]; then
+elif [[ ":$RWFRES40_LIST:" =~ ":$DEVICENAME:" ]]; then
         REFRESH_LIMITS="40,60"
 else
         REFRESH_LIMITS="50,60"
 fi
 
 export REFRESH_LIMITS=${REFRESH_LIMITS}
-
 
 
 # OXP 一号本设备
@@ -64,7 +74,7 @@ GPD_LIST="G1618-04:G1619-04"
 
 ORIENTATION_LEFT_LIST="${AIR_LIST}:${OXP_LIST}:${AOK_LIST}"
 
-if [[ ":$ORIENTATION_LEFT_LIST:" =~ ":$DEVICENAME:"  ]]; then
+if [[ ":$ORIENTATION_LEFT_LIST:" =~ ":$DEVICENAME:" ]]; then
         ORIENTATION="--force-orientation left"
 else
         ORIENTATION=""
@@ -74,10 +84,8 @@ export ORIENTATION=${ORIENTATION}
 
 
 # EXTRA_VARS
-# GPD-WIN3 设备 desktop模式运行gamescope以全屏方式启动
-FULLSCREEN_LIST="G1618-03"
-
-if [[ ":$FULLSCREEN_LIST:" =~ ":$DEVICENAME:"  ]]; then
+# 如果检测当前为desktop模式，则gamescope以全屏方式启动
+if [[ "$DESKTOP_MODE_FLAG" == "1" ]]; then
         EXTRA_VARS="-f"
 else
         EXTRA_VARS=""
@@ -85,12 +93,12 @@ fi
 
 export EXTRA_VARS=${EXTRA_VARS}
 
+
 # INTEL WORKAROUND
 # 修复Intel的显卡出现颜色错误的问题 INTEL_DEBUG=noccs
 # 修复Intel部分片头视频没有声音的问题 mesa_glthread=true
 # 修复Intel没有MANGOHUD显示的问题 MANGOHUD=1 MANGOHUD_DLSYM=1 
-VGA_DEVICE=$(lspci | grep VGA)
-if [[ "$VGA_DEVICE" =~ "Intel" ]]; then
+if [[ "$INTEL_DEVICE_FLAG" == "1" ]]; then
     export INTEL_DEBUG=noccs
     export mesa_glthread=true
     export MANGOHUD=1
