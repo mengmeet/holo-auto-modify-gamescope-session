@@ -20,4 +20,7 @@ sed -i 's#-w 1280 -h 800 \\#-w ${WIDTH} -h ${HEIGHT} \\\n\t${ORIENTATION} \\\n\t
 sed -i 's#eDP-1#${PREFER_OUTPUT}#' /usr/bin/gamescope-session
 sed -i 's#STEAM_DISPLAY_REFRESH_LIMITS=40,60#STEAM_DISPLAY_REFRESH_LIMITS=${REFRESH_LIMITS}#' /usr/bin/gamescope-session
 
+# 为了兼容 MangoPeel 插件，禁用新版 gamescope 预设
+sed -i 's#STEAM_MANGOAPP_PRESETS_SUPPORTED=1#STEAM_MANGOAPP_PRESETS_SUPPORTED=0#' /usr/bin/gamescope-session
+
 echo "修改完成"
