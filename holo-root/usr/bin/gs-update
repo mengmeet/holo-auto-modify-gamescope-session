@@ -29,5 +29,6 @@ sed -i 's#STEAM_DISPLAY_REFRESH_LIMITS=40,60#STEAM_DISPLAY_REFRESH_LIMITS=${REFR
 # 可以改回来了
 sed -i 's#STEAM_MANGOAPP_PRESETS_SUPPORTED=0#STEAM_MANGOAPP_PRESETS_SUPPORTED=1#' /usr/bin/gamescope-session
 
+sed -i 's#source holoiso-devicequirk-set#source holoiso-devicequirk-set\nsource /usr/bin/gamescope-device#' /usr/bin/gamescope-session
 
 echo "修改完成"

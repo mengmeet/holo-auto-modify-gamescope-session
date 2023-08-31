@@ -76,11 +76,14 @@ AOK_LIST="AOKZOE A1 AR07"
 GPD_LIST="G1618-04:G1619-04"
 
 ORIENTATION_LEFT_LIST="${AIR_LIST}:${OXP_LIST}:${AOK_LIST}"
+ORIENTATION_RIGHT_LIST="${AYA_LIST}"
 
 if [[ ":$ORIENTATION_LEFT_LIST:" =~ ":$DEVICENAME:" ]]; then
         ORIENTATION="--force-orientation left"
-else
-        ORIENTATION=""
+else if [[ ":$ORIENTATION_RIGHT_LIST:" =~ ":$DEVICENAME:" ]]; then
+        ORIENTATION="--force-orientation right"
+else 
+		ORIENTATION=""
 fi
 
 # export ORIENTATION=${ORIENTATION}
