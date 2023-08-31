@@ -64,6 +64,14 @@ fi
 export REFRESH_LIMITS=${REFRESH_LIMITS}
 
 
+# force-panel-type
+if [[ "${DEVICENAME}" =~ "Jupiter" ]]; then
+		FORCE_PANEL_TYPR=""
+else
+		FORCE_PANEL_TYPR="--force-panel-type external"
+fi
+
+
 # OXP 一号本设备
 OXP_LIST="ONE XPLAYER:ONEXPLAYER 1 T08:ONEXPLAYER 1S A08:ONEXPLAYER 1S T08:ONEXPLAYER mini A07:ONEXPLAYER mini GA72:ONEXPLAYER mini GT72:ONEXPLAYER GUNDAM GA72:ONEXPLAYER 2 ARP23:ONEXPLAYER Mini Pro:ONEXPLAYER F1"
 # AYANEO AIR 设备
@@ -79,21 +87,26 @@ ORIENTATION_LEFT_LIST="${AIR_LIST}:${OXP_LIST}:${AOK_LIST}"
 ORIENTATION_RIGHT_LIST="${AYA_LIST}"
 
 if [[ ":$ORIENTATION_LEFT_LIST:" =~ ":$DEVICENAME:" ]]; then
-        ORIENTATION="--force-orientation left"
+        # ORIENTATION="--force-orientation left"
+		if [[ -z "$FORCE_PANEL_TYPR" ]]; then
+			ORIENTATION="--force-orientation left"
+		else
+			ORIENTATION="--force-external-orientation left"
+		fi
+		
 elif [[ ":$ORIENTATION_RIGHT_LIST:" =~ ":$DEVICENAME:" ]]; then
-        ORIENTATION="--force-orientation right"
+        # ORIENTATION="--force-orientation right"
+		if [[ -z "$FORCE_PANEL_TYPR" ]]; then
+			ORIENTATION="--force-orientation right"
+		else
+			ORIENTATION="--force-external-orientation right"
+		fi
 else 
 		ORIENTATION=""
 fi
 
 # export ORIENTATION=${ORIENTATION}
 
-# force-panel-type
-if [[ "${DEVICENAME}" =~ "Jupiter" ]]; then
-		FORCE_PANEL_TYPR=""
-else
-		FORCE_PANEL_TYPR="--force-panel-type external"
-fi
 
 # EXTRA_VARS
 # 如果检测当前为desktop模式，则gamescope以全屏方式启动
