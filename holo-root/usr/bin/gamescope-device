@@ -55,7 +55,7 @@ if [[ ":$RWFRES30_LIST:" =~ ":$DEVICENAME:" ]]; then
 elif [[ ":$RWFRES40_LIST:" =~ ":$DEVICENAME:" ]]; then
         REFRESH_LIMITS="40,60"
 elif [[ "ROG Ally RC71L_RC71L" == "$DEVICENAME" ]]; then
-        REFRESH_LIMITS="30,120"
+        REFRESH_LIMITS="40,120"
 else
         REFRESH_LIMITS="50,60"
 fi
