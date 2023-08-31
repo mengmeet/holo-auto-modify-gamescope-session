@@ -80,7 +80,7 @@ ORIENTATION_RIGHT_LIST="${AYA_LIST}"
 
 if [[ ":$ORIENTATION_LEFT_LIST:" =~ ":$DEVICENAME:" ]]; then
         ORIENTATION="--force-orientation left"
-else if [[ ":$ORIENTATION_RIGHT_LIST:" =~ ":$DEVICENAME:" ]]; then
+elif [[ ":$ORIENTATION_RIGHT_LIST:" =~ ":$DEVICENAME:" ]]; then
         ORIENTATION="--force-orientation right"
 else 
 		ORIENTATION=""
