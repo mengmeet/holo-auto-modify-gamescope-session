@@ -21,20 +21,21 @@ if [[ "$DESKTOP_MODE_FLAG" == "1" ]]; then
 	H1080_LIST="G1618-04"
 	H1600_LIST="G1619-04:ONEXPLAYER 2 ARP23"
 	if [[ ":$H1600_LIST:" =~ ":$DEVICENAME:" ]]; then
-        	WIDTH=2560
+        WIDTH=2560
 		HEIGHT=1600
 	elif [[ ":$H1080_LIST:" =~ ":$DEVICENAME:" ]]; then
-        	WIDTH=1920
+        WIDTH=1920
 		HEIGHT=1080
 	elif [[ ":$H720_LIST:" =~ ":$DEVICENAME:" ]]; then
-        	WIDTH=1280
+        WIDTH=1280
 		HEIGHT=720
 	fi
 fi
 # gamescope-session默认使用1280x800分辨率启动
-export WIDTH=${WIDTH:-"1280"}
-export HEIGHT=${HEIGHT:-"800"}
-	
+# export WIDTH=${WIDTH:-"1280"}
+# export HEIGHT=${HEIGHT:-"800"}
+WIDTH=${WIDTH:-"1280"}
+HEIGHT=${HEIGHT:-"800"}
 	
 # PREFER_OUTPUT
 # GPD-WIN3 设备 可使用'xrandr --verbose'命令查询WIN3的显示器名称为DSI1,修改默认eDP-1为DSI1
@@ -82,8 +83,14 @@ else
         ORIENTATION=""
 fi
 
-export ORIENTATION=${ORIENTATION}
+# export ORIENTATION=${ORIENTATION}
 
+# force-panel-type
+if [[ "${DEVICENAME}" =~ "Jupiter" ]]; then
+		FORCE_PANEL_TYPR=""
+else
+		FORCE_PANEL_TYPR="--force-panel-type external"
+fi
 
 # EXTRA_VARS
 # 如果检测当前为desktop模式，则gamescope以全屏方式启动
@@ -106,3 +113,6 @@ if [[ "$INTEL_DEVICE_FLAG" == "1" ]]; then
     export MANGOHUD=1
     export MANGOHUD_DLSYM=1
 fi
+
+
+export HOLOISO_GAMESCOPE_ADDITIONAL_OPTIONS="-w ${WIDTH} -h ${HEIGHT} ${ORIENTATION} ${FORCE_PANEL_TYPR} ${EXTRA_VARS}"
